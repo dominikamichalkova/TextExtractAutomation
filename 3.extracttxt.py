@@ -1,4 +1,5 @@
-#extracting text from .docx and .pdf files (that were creating by mergin all contract files of the same file format) and store it in .txt file
+#extracting text from .docx and .pdf files (that were creating by merging all contract files of the same file format and store it as .txt file format
+
 import fileinput
 import os
 import Tkinter, tkFileDialog
@@ -55,7 +56,7 @@ i=0
 
 files = os.listdir(os.getcwd())
 
-#crete new dir to store monolingual corpus files - final stage
+#create new dir to store monolingual corpus files - final stage
 outputdir = '..\monolingualCorpus'
 if not os.path.exists(outputdir):
     os.makedirs(outputdir)

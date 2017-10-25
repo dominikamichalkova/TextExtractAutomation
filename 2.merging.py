@@ -1,11 +1,11 @@
 #Python sript to merge .docx and .pdf format files in a given directory
 #do not use special characters or blank spaces to name your files, otherwise the output is error
-#however if your source consist of plenty of files, run renamescript.py to normalize their names
+#however if your source consist of the files with special charracters, run replace.py to normalize their names
 #prior to successfully run this code, run a renamescript.py that is going to edit file names in a given directory
 
 #put all files you want to combine in one directory
 #process separated in 2 steps - separately merge .docx files and separtely merge .pdf files
-#the output are 2 files in a subdirectory of your folder with files
+#the output is: 2 files in a subdirectory of your folder with files
 
 import docx
 import time
