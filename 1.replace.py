@@ -1,25 +1,22 @@
+#Python script to rename file names that contain blank spaces and other special characters and replace them
+#alternative = script.sh which must be placed in a folder with files you want change their names for
+
 import os
 import regex
+import Tkinter, tkFileDialog
 
-os.chdir('C:\Users\Dominika\Documents\doc')
-path = os.getcwd()
-filenames = os.listdir(path)
+root = Tkinter.Tk()
+root.withdraw()
+dirname = tkFileDialog.askdirectory(parent=root,initialdir="/",title='Please select a directory with your files')
+os.chdir(dirname)
+print os.getcwd()
 
-old="doc"
-new="docx"
-
-for file in filenames:
-    if file.endswith('.doc'):
-        print file
-        newname=file.replace(old,new)
-        os.rename(file,newname)
-        print newname
-    else:
-        print "There are no .doc files"
+filenames = os.listdir(dirname)
 
 for file in filenames:
         if regex.search("[^a-zA-Z0-9\.]",file):
-            name = regex.sub('[^0-9a-zA-Z\.]', '',file)
+            print file
+            name = regex.sub('[^0-9a-zA-Z\.\_\-]', '',file)
             change=file.replace(file,name)
-            os.rename(os.path.join(path,file),os.path.join(path,change))
+            os.rename(os.path.join(dirname,file),os.path.join(dirname,change))
             print name

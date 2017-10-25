@@ -1,41 +1,39 @@
-#Script to merge pdf and docx
+#Python sript to merge .docx and .pdf format files in a given directory
+#do not use special characters or blank spaces to name your files, otherwise the output is error
+#however if your source consist of plenty of files, run renamescript.py to normalize their names
+#prior to successfully run this code, run a renamescript.py that is going to edit file names in a given directory
 
+#put all files you want to combine in one directory
+#process separated in 2 steps - separately merge .docx files and separtely merge .pdf files
+#the output are 2 files in a subdirectory of your folder with files
+
+import docx
 import time
 import os
+import Tkinter, tkFileDialog
 from PyPDF2 import PdfFileMerger,PdfFileReader
-
-os.chdir('.\contract_files')
-path = os.getcwd()
-print path
-
-pdfs = [f for f in os.listdir(path) if f.endswith('pdf')] #if condition necessary
-
-merger = PdfFileMerger()
-
-for filename in pdfs:
-    merger.append(PdfFileReader(os.path.join(path,filename),'rb'))
-
-merger.write('..\combinedfiles\combinedpdfs.pdf') #must be not indented
-
-print "Merging all documents in directory took: ", time.time() - start, "sec"
-
-# v.02 works too
-# merger = PdfFileMerger()
-# i = 0
-# print len(pdfs)
-# for i in range(0, len(pdfs)):
-#     merger.append(PdfFileReader(os.path.join(path, pdfs[i]), 'rb'))
-# merger.write('..\combinedfiles\combinedpdfs.pdf')
-
-
 
 start = time.time()
 
-files = glob.glob(".\contract_files\*.docx")
+root = Tkinter.Tk()
+root.withdraw()
+dirname = tkFileDialog.askdirectory(parent=root,initialdir="/",title='Please select a directory with your files')
+os.chdir(dirname)
+print os.getcwd()
+
+print '\n'
+
+files = [f for f in os.listdir(dirname) if f.endswith('.docx')]
 print files
 
-output = '.\combinedfiles\combinedocs.docx';
-input = files;
+#create subdirectory to store combined(merged) files created by the following process
+outputdir = '.\combinedfiles'
+if not os.path.exists(outputdir):
+    os.makedirs(outputdir)
+
+output = '.\combinedfiles\combinedocs.docx' #define a name of the file that contains a merging of all .docx files
+
+input = files
 
 def text_from_docx(path):
 
@@ -47,6 +45,17 @@ combined_doc = docx.Document()
 for file_path in input:
     for text in text_from_docx(file_path):
         combined_doc.add_paragraph(text)
-        #if not file_path is DOCUMENTS_TO_COMBINE[-1]:
-            #combined_doc.add_page_break()
         combined_doc.save(output)
+
+#Script to merge pdf
+
+pdfs = [f for f in os.listdir(dirname) if f.endswith('.pdf')]
+
+merger = PdfFileMerger()
+
+for filename in pdfs:
+    merger.append(PdfFileReader(os.path.join(dirname,filename),'rb'))
+
+merger.write('.\combinedfiles\combinedpdfs.pdf') #must be not indented
+
+print "Merging all documents in directory took: ", time.time() - start, "sec"
